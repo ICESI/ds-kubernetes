@@ -3,6 +3,7 @@
 
 VAGRANTFILE_API_VERSION = "2"
 
+disk0 = './secondDisk0.vdi'
 disk1 = './secondDisk1.vdi'
 disk2 = './secondDisk2.vdi'
 disk3 = './secondDisk3.vdi'
@@ -13,10 +14,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     k8sm.vm.network :private_network, ip: "192.168.56.101"
     k8sm.vm.provider :virtuak8smox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "k8s_server" ]
-      unless File.exist?(disk)
-        vb.customize ['createhd', '--filename', disk1, '--variant', 'Fixed', '--size', 5 * 1024]
+      unless File.exist?(disk0)
+        vb.customize ['createhd', '--filename', disk0, '--variant', 'Fixed', '--size', 5 * 1024]
       end
-      vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk1]
+      vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk0]
     end
     k8sm.vm.provision "shell", inline: <<-SHELL
       echo "node0" > /etc/hostname
@@ -32,10 +33,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     k8sn1.vm.network :private_network, ip: "192.168.56.102"
     k8sn1.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "512","--cpus", "1", "--name", "k8s_node_1" ]
-      unless File.exist?(disk)
-        vb.customize ['createhd', '--filename', disk2, '--variant', 'Fixed', '--size', 5 * 1024]
+      unless File.exist?(disk1)
+        vb.customize ['createhd', '--filename', disk1, '--variant', 'Fixed', '--size', 5 * 1024]
       end
-      vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk2]
+      vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk1]
     end
     k8sn1.vm.provision "shell", inline: <<-SHELL
       echo "node1" > /etc/hostname
@@ -50,6 +51,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     k8sn2.vm.network :private_network, ip: "192.168.56.103"
     k8sn2.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "512","--cpus", "1", "--name", "k8s_node_2" ]
+      unless File.exist?(disk2)
+        vb.customize ['createhd', '--filename', disk2, '--variant', 'Fixed', '--size', 5 * 1024]
+      end
+      vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk2]
     end
     k8sn2.vm.provision "shell", inline: <<-SHELL
       echo "node2" > /etc/hostname
@@ -64,7 +69,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     k8sn3.vm.network :private_network, ip: "192.168.56.104"
     k8sn3.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "512","--cpus", "1", "--name", "k8s_node_3" ]
-      unless File.exist?(disk)
+      unless File.exist?(disk3)
         vb.customize ['createhd', '--filename', disk3, '--variant', 'Fixed', '--size', 5 * 1024]
       end
       vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk3]
