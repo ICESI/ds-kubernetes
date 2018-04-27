@@ -3,6 +3,9 @@
 
 VAGRANTFILE_API_VERSION = "2"
 
+disk1 = './secondDisk1.vdi'
+disk2 = './secondDisk2.vdi'
+disk3 = './secondDisk3.vdi'
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
   config.vm.define :k8s_master do |k8sm|
@@ -10,46 +13,67 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     k8sm.vm.network :private_network, ip: "192.168.56.101"
     k8sm.vm.provider :virtuak8smox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "k8s_server" ]
+      unless File.exist?(disk)
+        vb.customize ['createhd', '--filename', disk1, '--variant', 'Fixed', '--size', 5 * 1024]
+      end
+      vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk1]
     end
     k8sm.vm.provision "shell", inline: <<-SHELL
-#      curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-#      chmod +x ./kubectl
-#      sudo mv ./kubectl /usr/local/bin/kubectl
-      curl -fsSL get.docker.com -o get-docker.sh
-      sh get-docker.sh
-      usermod -aG docker vagrant
-      systemctl start docker
-#      ip=$(hostname -I | awk '{print $2}')
-#      docker swarm init --advertise-addr $ip
-#      curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-#      chmod +x /usr/local/bin/docker-compose
+      echo "node0" > /etc/hostname
+    SHELL
+    k8sm.vm.provision "shell", path: "install/docker.sh"
+    k8sm.vm.provision "shell", path: "install/k8s.sh"
+    k8sm.vm.provision "shell", path: "install/glusterfs.sh"
+    k8sm.vm.provision "shell", inline: <<-SHELL
+      curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+      chmod +x /usr/local/bin/docker-compose
     SHELL
   end
-  config.vm.define :docker_node_1 do |k8sn1|
+  config.vm.define :k8s_node_1 do |k8sn1|
     k8sn1.vm.box = "ubuntu/xenial64"
     k8sn1.vm.network :private_network, ip: "192.168.56.102"
     k8sn1.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "k8s_node_1" ]
+      vb.customize ["modifyvm", :id, "--memory", "512","--cpus", "1", "--name", "k8s_node_1" ]
+      unless File.exist?(disk)
+        vb.customize ['createhd', '--filename', disk2, '--variant', 'Fixed', '--size', 5 * 1024]
+      end
+      vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk2]
     end
-    k8sn1.vm.provision "shell", inline: <<-SHELL
-      curl -fsSL get.docker.com -o get-docker.sh
-      sh get-docker.sh
-      usermod -aG docker vagrant
-      systemctl start docker
+    k8sm.vm.provision "shell", inline: <<-SHELL
+      echo "node1" > /etc/hostname
     SHELL
+    k8sn1.vm.provision "shell", path: "install/docker.sh"
+    k8sn1.vm.provision "shell", path: "install/k8s.sh"
+    k8sn1.vm.provision "shell", path: "install/glusterfs.sh"
   end
-  config.vm.define :docker_node_2 do |k8sn2|
+  config.vm.define :k8s_node_2 do |k8sn2|
     k8sn2.vm.box = "ubuntu/xenial64"
     k8sn2.vm.network :private_network, ip: "192.168.56.103"
     k8sn2.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "k8s_node_2" ]
+      vb.customize ["modifyvm", :id, "--memory", "512","--cpus", "1", "--name", "k8s_node_2" ]
     end
-    k8sn2.vm.provision "shell", inline: <<-SHELL
-      curl -fsSL get.docker.com -o get-docker.sh
-      sh get-docker.sh
-      usermod -aG docker vagrant
-      systemctl start docker
+    k8sm.vm.provision "shell", inline: <<-SHELL
+      echo "node2" > /etc/hostname
     SHELL
+    k8sn2.vm.provision "shell", path: "install/docker.sh"
+    k8sn2.vm.provision "shell", path: "install/k8s.sh"
+    k8sn2.vm.provision "shell", path: "install/glusterfs.sh"
+  end
+  config.vm.define :k8s_node_3 do |k8sn3|
+    k8sn3.vm.box = "ubuntu/xenial64"
+    k8sn3.vm.network :private_network, ip: "192.168.56.104"
+    k8sn3.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "512","--cpus", "1", "--name", "k8s_node_3" ]
+      unless File.exist?(disk)
+        vb.customize ['createhd', '--filename', disk3, '--variant', 'Fixed', '--size', 5 * 1024]
+      end
+      vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk3]
+    end
+    k8sm.vm.provision "shell", inline: <<-SHELL
+      echo "node3"> /etc/hostname
+    SHELL
+    k8sn3.vm.provision "shell", path: "install/docker.sh"
+    k8sn3.vm.provision "shell", path: "install/k8s.sh"
+    k8sn3.vm.provision "shell", path: "install/glusterfs.sh"
   end
 end
-
