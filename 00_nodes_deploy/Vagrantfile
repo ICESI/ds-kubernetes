@@ -21,13 +21,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     k8sm.vm.provision "shell", inline: <<-SHELL
       echo "node0" > /etc/hostname
     SHELL
+    k8sm.vm.provision "shell", path: "install/configurations.sh"
     k8sm.vm.provision "shell", path: "install/docker.sh"
+    #k8sm.vm.provision "shell", path: "install/compose.sh"
     k8sm.vm.provision "shell", path: "install/k8s.sh"
     k8sm.vm.provision "shell", path: "install/glusterfs.sh"
-    k8sm.vm.provision "shell", inline: <<-SHELL
-      curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-      chmod +x /usr/local/bin/docker-compose
-    SHELL
   end
   config.vm.define :k8s_node_1 do |k8sn1|
     k8sn1.vm.box = "ubuntu/xenial64"
@@ -39,9 +37,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
       vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk2]
     end
-    k8sm.vm.provision "shell", inline: <<-SHELL
+    k8sn1.vm.provision "shell", inline: <<-SHELL
       echo "node1" > /etc/hostname
     SHELL
+    k8sn1.vm.provision "shell", path: "install/configurations.sh"
     k8sn1.vm.provision "shell", path: "install/docker.sh"
     k8sn1.vm.provision "shell", path: "install/k8s.sh"
     k8sn1.vm.provision "shell", path: "install/glusterfs.sh"
@@ -52,9 +51,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     k8sn2.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "512","--cpus", "1", "--name", "k8s_node_2" ]
     end
-    k8sm.vm.provision "shell", inline: <<-SHELL
+    k8sn2.vm.provision "shell", inline: <<-SHELL
       echo "node2" > /etc/hostname
     SHELL
+    k8sn2.vm.provision "shell", path: "install/configurations.sh"
     k8sn2.vm.provision "shell", path: "install/docker.sh"
     k8sn2.vm.provision "shell", path: "install/k8s.sh"
     k8sn2.vm.provision "shell", path: "install/glusterfs.sh"
@@ -69,9 +69,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
       vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk3]
     end
-    k8sm.vm.provision "shell", inline: <<-SHELL
+    k8sn3.vm.provision "shell", inline: <<-SHELL
       echo "node3"> /etc/hostname
     SHELL
+    k8sn3.vm.provision "shell", path: "install/configurations.sh"
     k8sn3.vm.provision "shell", path: "install/docker.sh"
     k8sn3.vm.provision "shell", path: "install/k8s.sh"
     k8sn3.vm.provision "shell", path: "install/glusterfs.sh"
