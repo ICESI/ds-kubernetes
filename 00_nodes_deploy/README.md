@@ -1,25 +1,4 @@
-### Ejemplo Docker Swarm y Glusterfs
-
-```
-# ip=$(hostname -I | awk '{print $2}')
-# docker swarm init --advertise-addr $ip
-```
-
-```
-sudo docker node update --label-add nodename=node1 node1
-sudo docker node update --label-add nodename=node2 node2
-sudo docker node update --label-add nodename=node3 node3
-mkdir //swarm/volumes/testvol
-sudo docker service create --name testcon --constraint 'node.labels.nodename == node1' --mount type=bind,source=/swarm/volumes/testvol,target=/mnt/testvol busybox /bin/touch /mnt/testvol/testfile1.txt
-sudo docker service ls
-sudo docker service ps testcon
-sudo docker service rm testcon
-sudo docker service create --name testcon --constraint 'node.labels.nodename == node3' --mount type=bind,source=/swarm/volumes/testvol,target=/mnt/testvol busybox /bin/touch /mnt/testvol/testfile3.txt
-sudo docker service ps testcon
-ls -l /swarm/volumes/testvol/
-```
-
-### Ejemplo Kubernetes y Glusterfs
+### Glusterfs (Inicialización)
 
 En el nodo maestro
 ```
@@ -35,6 +14,29 @@ En todos los nodos
 ```
 sudo mount.glusterfs localhost:/swarm-vols /swarm/volumes
 ```
+
+### Ejemplo Docker Swarm y Glusterfs
+
+```
+# ip=$(hostname -I | awk '{print $2}')
+# docker swarm init --advertise-addr $ip
+```
+
+```
+sudo docker node update --label-add nodename=node1 node1
+sudo docker node update --label-add nodename=node2 node2
+sudo docker node update --label-add nodename=node3 node3
+mkdir /swarm/volumes/testvol
+sudo docker service create --name testcon --constraint 'node.labels.nodename == node1' --mount type=bind,source=/swarm/volumes/testvol,target=/mnt/testvol busybox /bin/touch /mnt/testvol/testfile1.txt
+sudo docker service ls
+sudo docker service ps testcon
+sudo docker service rm testcon
+sudo docker service create --name testcon --constraint 'node.labels.nodename == node3' --mount type=bind,source=/swarm/volumes/testvol,target=/mnt/testvol busybox /bin/touch /mnt/testvol/testfile3.txt
+sudo docker service ps testcon
+ls -l /swarm/volumes/testvol/
+```
+
+### Ejemplo Kubernetes y Glusterfs
 
 En el nodo maestro
 ```
