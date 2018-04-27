@@ -1,0 +1,55 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.define :k8s_master do |k8sm|
+    k8sm.vm.box = "ubuntu/xenial64"
+    k8sm.vm.network :private_network, ip: "192.168.56.101"
+    k8sm.vm.provider :virtuak8smox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "k8s_server" ]
+    end
+    k8sm.vm.provision "shell", inline: <<-SHELL
+#      curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+#      chmod +x ./kubectl
+#      sudo mv ./kubectl /usr/local/bin/kubectl
+      curl -fsSL get.docker.com -o get-docker.sh
+      sh get-docker.sh
+      usermod -aG docker vagrant
+      systemctl start docker
+#      ip=$(hostname -I | awk '{print $2}')
+#      docker swarm init --advertise-addr $ip
+#      curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+#      chmod +x /usr/local/bin/docker-compose
+    SHELL
+  end
+  config.vm.define :docker_node_1 do |k8sn1|
+    k8sn1.vm.box = "ubuntu/xenial64"
+    k8sn1.vm.network :private_network, ip: "192.168.56.102"
+    k8sn1.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "k8s_node_1" ]
+    end
+    k8sn1.vm.provision "shell", inline: <<-SHELL
+      curl -fsSL get.docker.com -o get-docker.sh
+      sh get-docker.sh
+      usermod -aG docker vagrant
+      systemctl start docker
+    SHELL
+  end
+  config.vm.define :docker_node_2 do |k8sn2|
+    k8sn2.vm.box = "ubuntu/xenial64"
+    k8sn2.vm.network :private_network, ip: "192.168.56.103"
+    k8sn2.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "k8s_node_2" ]
+    end
+    k8sn2.vm.provision "shell", inline: <<-SHELL
+      curl -fsSL get.docker.com -o get-docker.sh
+      sh get-docker.sh
+      usermod -aG docker vagrant
+      systemctl start docker
+    SHELL
+  end
+end
+
