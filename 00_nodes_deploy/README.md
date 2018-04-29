@@ -2,10 +2,11 @@
 
 En el nodo maestro
 ```
+sudo gluster peer probe node1
 sudo gluster peer probe node2
 sudo gluster peer probe node3
 gluster pool list
-sudo gluster volume create swarm-vols replica 3 node1:/gluster/data node2:/gluster/data node3:/gluster/data force
+sudo gluster volume create swarm-vols replica 3 node0:/gluster/data node1:/gluster/data node2:/gluster/data node3:/gluster/data force
 sudo gluster volume set swarm-vols auth.allow 127.0.0.1
 sudo gluster volume start swarm-vols
 ```
@@ -43,19 +44,77 @@ En el nodo maestro
 kubeadm init --apiserver-advertise-address $(hostname -I | awk '{print $2}')
 ```
 
-### Instalación Manual de Kubernetes
+Permitir el despliegue de contenedores en el nodo maestro
+```
+kubectl taint nodes --all node-role.kubernetes.io/master-
+```
+
+Ejecutar como el usuario vagrant
+```
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+Instalar un pod de red para que los pods a desplegar se puedan comunicar
+```
+sysctl net.bridge.bridge-nf-call-iptables=1
+export kubever=$(kubectl version | base64 | tr -d '\n')
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+```
+
+Esperar a que los pods de red esten en ejecución
+```
+kubectl get pods --all-namespaces
+```
+
+Unir los nodos
+```
+mkdir -p /etc/cni/net.d/
+vi /etc/cni/net.d/10-weave.conf
+{
+    "name": "weave",
+    "type": "weave-net",
+    "hairpinMode": true
+}
+chmod 744 /etc/cni/net.d/10-weave.conf
+kubeadm join 192.168.56.101:6443 --token pgmop3.hyakc1edre6tl1l7 --discovery-token-ca-cert-hash sha256:9ab154a9d87b8ae05c871e19dae210f445fda1a4006b3b672424849399e32bbd
+```
+
+### Comandos útiles
+
+Conocer el servicio que usa un puerto (port)
+```
+lsof -i :port -S
+```
+
+Diagnosticar fallas de kubernetes
+```
+journalctl -xeu kubelet
+```
 
 ```
-RELEASE="$(curl -sSL https://dl.k8s.io/release/stable.txt)"
+kubectl get nodes
+kubectl create -f pod-nginx.yaml
+kubectl delete pod nginx
+kubectl label nodes node1 nodetype=development
+kubectl get pods -o wide
+kubectl get endpoints
+kubectl get pods --all-namespaces -o wide
+kubectl logs -n kube-system <weave-net-pod> weave
+```
 
-mkdir -p /opt/bin
-cd /opt/bin
-curl -L --remote-name-all https://storage.googleapis.com/kubernetes-release/release/${RELEASE}/bin/linux/amd64/{kubeadm,kubelet,kubectl}
-chmod +x {kubeadm,kubelet,kubectl}
+### Calico
 
-curl -sSL "https://raw.githubusercontent.com/kubernetes/kubernetes/master/build/debs/kubelet.service" | sed "s:/usr/bin:/usr/local/bin:g" > /etc/systemd/system/kubelet.service
-mkdir -p /etc/systemd/system/kubelet.service.d
-curl -sSL "https://raw.githubusercontent.com/kubernetes/kubernetes/master/build/debs/10-kubeadm.conf" | sed "s:/usr/bin:/usr/local/bin:g" > /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+```
+kubeadm init --apiserver-advertise-address $(hostname -I | awk '{print $2}') --pod-network-cidr=192.168.0.0/16
+kubectl taint nodes --all node-role.kubernetes.io/master-
+mv  $HOME/.kube $HOME/.kube.bak
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl apply -f https://docs.projectcalico.org/v3.1/getting-started/kubernetes/installation/hosted/kubeadm/1.7/calico.yaml
+kubectl get pods --all-namespaces
 ```
 
 ### References
@@ -77,3 +136,7 @@ curl -sSL "https://raw.githubusercontent.com/kubernetes/kubernetes/master/build/
 * https://support.rackspace.com/how-to/getting-started-with-glusterfs-considerations-and-installation/
 
 * https://everythingshouldbevirtual.com/virtualization/vagrant-adding-a-second-hard-drive/
+
+* https://github.com/kubernetes/kubernetes/issues/33671
+
+* https://kubernetes.io/docs/concepts/configuration/assign-pod-node/

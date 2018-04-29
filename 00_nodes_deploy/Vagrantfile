@@ -15,18 +15,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     k8sm.vm.provider :virtuak8smox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "k8s_server" ]
       unless File.exist?(firstDisk)
-        vb.customize ['createhd', '--filename', firstDisk, '--variant', 'Fixed', '--size', 20 * 1024]
+        vb.customize ['createhd', '--filename', firstDisk, '--variant', 'Fixed', '--size', 5 * 1024]
       end
       vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', firstDisk]
     end
     k8sm.vm.provision "shell", inline: <<-SHELL
       echo "node0" > /etc/hostname
+      hostname node0
     SHELL
     k8sm.vm.provision "shell", path: "install/configurations.sh"
     k8sm.vm.provision "shell", path: "install/docker.sh"
-    k8sm.vm.provision "shell", path: "install/compose.sh"
+    # k8sm.vm.provision "shell", path: "install/compose.sh"
     k8sm.vm.provision "shell", path: "install/k8s.sh"
-    k8sm.vm.provision "shell", path: "install/glusterfs.sh"
+    # k8sm.vm.provision "shell", path: "install/glusterfs.sh"
   end
   config.vm.define :k8s_node_1 do |k8sn1|
     k8sn1.vm.box = "ubuntu/xenial64"
@@ -40,6 +41,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     k8sn1.vm.provision "shell", inline: <<-SHELL
       echo "node1" > /etc/hostname
+      hostname node1
     SHELL
     k8sn1.vm.provision "shell", path: "install/configurations.sh"
     k8sn1.vm.provision "shell", path: "install/docker.sh"
@@ -58,6 +60,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     k8sn2.vm.provision "shell", inline: <<-SHELL
       echo "node2" > /etc/hostname
+      hostname node2
     SHELL
     k8sn2.vm.provision "shell", path: "install/configurations.sh"
     k8sn2.vm.provision "shell", path: "install/docker.sh"
@@ -76,6 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     k8sn3.vm.provision "shell", inline: <<-SHELL
       echo "node3"> /etc/hostname
+      hostname node3
     SHELL
     k8sn3.vm.provision "shell", path: "install/configurations.sh"
     k8sn3.vm.provision "shell", path: "install/docker.sh"
