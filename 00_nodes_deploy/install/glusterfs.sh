@@ -1,4 +1,5 @@
 apt install -y glusterfs-server
+apt install -y xfsprogs
 systemctl start glusterfs-server
 
 sfdisk /dev/sdb << EOF
