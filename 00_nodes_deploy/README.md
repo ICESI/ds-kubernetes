@@ -117,6 +117,22 @@ kubectl apply -f https://docs.projectcalico.org/v3.1/getting-started/kubernetes/
 kubectl get pods --all-namespaces
 ```
 
+### Troubleshooting
+
+Error:  
+[ERROR Swap]: running with swap on is not supported. Please disable swap
+
+Solution:
+```
+kubeadm reset 
+echo 'Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"' >> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+systemctl daemon-reload
+systemctl restart kubelet
+
+kubeadm init
+```
+
 ### References
 * http://embaby.com/blog/using-glusterfs-docker-swarm-cluster/
 * https://docs.gluster.org/en/latest/Quick-Start-Guide/Quickstart/
