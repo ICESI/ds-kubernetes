@@ -140,3 +140,5 @@ kubectl get pods --all-namespaces
 * https://github.com/kubernetes/kubernetes/issues/33671
 
 * https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+
+* https://gist.github.com/jbeda/5e8a4ce0a23711da146e51900859c037
