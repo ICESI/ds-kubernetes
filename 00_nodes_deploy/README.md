@@ -41,7 +41,7 @@ ls -l /swarm/volumes/testvol/
 
 En el nodo maestro
 ```
-kubeadm init --apiserver-advertise-address $(hostname -I | awk '{print $2}')
+kubeadm init --ignore-preflight-errors CRI --apiserver-advertise-address $(hostname -I | awk '{print $2}') 
 ```
 
 Permitir el despliegue de contenedores en el nodo maestro
