@@ -81,6 +81,15 @@ chmod 744 /etc/cni/net.d/10-weave.conf
 kubeadm join 192.168.56.101:6443 --token pgmop3.hyakc1edre6tl1l7 --discovery-token-ca-cert-hash sha256:9ab154a9d87b8ae05c871e19dae210f445fda1a4006b3b672424849399e32bbd
 ```
 
+Unir los nodos (updated)
+```
+kubeadm join 192.168.56.101:6443 --token pgmop3.hyakc1edre6tl1l7 --discovery-token-ca-cert-hash sha256:9ab154a9d87b8ae05c871e19dae210f445fda1a4006b3b672424849399e32bbd
+mkdir -p $HOME/.kube
+sudo scp root@192.168.56.101:/etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl get nodes
+```
+
 ### Comandos útiles
 
 Conocer el servicio que usa un puerto (port)
