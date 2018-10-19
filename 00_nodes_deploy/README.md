@@ -141,4 +141,5 @@ kubectl get pods --all-namespaces
 
 * https://kubernetes.io/docs/concepts/configuration/assign-pod-node/  
 
-* https://docs.projectcalico.org/v3.2/getting-started/kubernetes/
+* https://docs.projectcalico.org/v3.2/getting-started/kubernetes/   <- I followed calico guide
+* https://github.com/kubernetes/kubernetes/issues/50295             <- I'm trying to solve connection issues from worker as specified here
