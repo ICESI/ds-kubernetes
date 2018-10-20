@@ -44,6 +44,15 @@ En el nodo maestro
 kubeadm init --ignore-preflight-errors CRI --apiserver-advertise-address $(hostname -I | awk '{print $2}') 
 ```
 
+Seguir las pautas de la guía de calico teniendo en cuenta actualizar el archivo calico.yml
+```
+# Auto-detect the BGP IP address.
+- name: IP
+  value: "autodetect"
+- name: IP_AUTODETECTION_METHOD
+  value: "interface=enp0s8"
+```
+
 Permitir el despliegue de contenedores en el nodo maestro
 ```
 kubectl taint nodes --all node-role.kubernetes.io/master-
@@ -116,6 +125,7 @@ kubectl get pods -o wide
 kubectl get endpoints
 kubectl get pods --all-namespaces -o wide
 kubectl logs -n kube-system <weave-net-pod> weave
+kubectl delete -f calico.yaml
 ```
 
 ### Calico
