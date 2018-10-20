@@ -102,6 +102,11 @@ Diagnosticar fallas de kubernetes
 journalctl -xeu kubelet
 ```
 
+Ver los logs de los pods del sistema (CrashLoopBackOff)
+```
+kubectl -n kube-system describe pod calico-node-mjvr8
+```
+
 ```
 kubectl get nodes
 kubectl create -f pod-nginx.yaml
