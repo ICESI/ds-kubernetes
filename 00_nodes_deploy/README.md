@@ -116,6 +116,11 @@ Ver los logs de los pods del sistema (CrashLoopBackOff)
 kubectl -n kube-system describe pod calico-node-mjvr8
 ```
 
+Chequear el liveness probe check
+```
+netstat -anp | grep "LISTEN" | grep 9099
+```
+
 ```
 kubectl get nodes
 kubectl create -f pod-nginx.yaml
