@@ -58,7 +58,7 @@ Permitir el despliegue de contenedores en el nodo maestro
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
-Ejecutar como el usuario vagrant
+Ejecutar como el usuario vagrant ( si se ha hecho un kubeadm reset ejecutar primero rm -rf ~/.kube )
 ```
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
