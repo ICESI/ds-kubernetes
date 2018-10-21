@@ -121,6 +121,16 @@ Chequear el liveness probe check
 netstat -anp | grep "LISTEN" | grep 9099
 ```
 
+Install calicoctl and test
+```
+curl -O -L https://github.com/projectcalico/calicoctl/releases/download/v3.2.3/calicoctl
+chmod +x calicoctl
+export ETCD_ENDPOINTS=http://10.96.232.136:6666
+./calicoctl get nodes
+```
+
+Failed to create Calico API client: context deadline exceeded
+
 ```
 kubectl get nodes
 kubectl create -f pod-nginx.yaml
