@@ -112,7 +112,7 @@ export ETCD_ENDPOINTS=http://10.96.232.136:6666
 ./calicoctl get nodes
 ```
 
-Failed to create Calico API client: context deadline exceeded
+Otros comandos
 
 ```
 kubectl get nodes
