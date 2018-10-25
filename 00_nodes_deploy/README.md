@@ -41,17 +41,7 @@ ls -l /swarm/volumes/testvol/
 
 En el nodo maestro
 ```
-kubeadm init --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors CRI --apiserver-advertise-address $(hostname -I | awk '{print $2}') 
-```
-
-Seguir las pautas de la guía de calico teniendo en cuenta usar la rama master de calico
-```
-wget https://docs.projectcalico.org/master/getting-started/kubernetes/installation/hosted/calico.yaml
-```
-
-Permitir el despliegue de contenedores en el nodo maestro
-```
-kubectl taint nodes --all node-role.kubernetes.io/master-
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors CRI --apiserver-advertise-address $(hostname -I | awk '{print $2}') 
 ```
 
 Ejecutar como el usuario vagrant ( si se ha hecho un kubeadm reset ejecutar primero rm -rf ~/.kube )
@@ -61,11 +51,26 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-Instalar un pod de red para que los pods a desplegar se puedan comunicar
+Instalar una instancia de etcd
 ```
-sysctl net.bridge.bridge-nf-call-iptables=1
-export kubever=$(kubectl version | base64 | tr -d '\n')
-kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+kubectl apply -f \
+https://docs.projectcalico.org/v3.2/getting-started/kubernetes/installation/hosted/etcd.yaml
+```
+
+Instalar los roles RBAC
+```
+kubectl apply -f \
+https://docs.projectcalico.org/v3.2/getting-started/kubernetes/installation/rbac.yaml
+```
+
+Instalar calico (aqui uso la rama master, para evitar inconvenientes podria fijar una version, ejemplo: 3.2)
+```
+wget https://docs.projectcalico.org/master/getting-started/kubernetes/installation/hosted/calico.yaml
+```
+
+Permitir el despliegue de contenedores en el nodo maestro
+```
+kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
 Esperar a que los pods de red esten en ejecución
@@ -126,41 +131,9 @@ kubectl logs -n kube-system <weave-net-pod> weave
 kubectl delete -f calico.yaml
 ```
 
-### Pasos antiguos
-
-Esto lo hice la primera vez pero ya no lo estoy usando
-```
-kubeadm init --apiserver-advertise-address $(hostname -I | awk '{print $2}') --pod-network-cidr=192.168.0.0/16
-kubectl taint nodes --all node-role.kubernetes.io/master-
-mv  $HOME/.kube $HOME/.kube.bak
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-kubectl apply -f https://docs.projectcalico.org/v3.1/getting-started/kubernetes/installation/hosted/kubeadm/1.7/calico.yaml
-kubectl get pods --all-namespaces
-```
-
-No fue necesariom estaba buscando alcanzar el liveness pero el liveness es local a cada nodo
-```
-# Auto-detect the BGP IP address.
-- name: IP
-  value: "autodetect"
-- name: IP_AUTODETECTION_METHOD
-  value: "interface=enp0s8"
-```
-
-Unir los nodos
-```
-mkdir -p /etc/cni/net.d/
-vi /etc/cni/net.d/10-weave.conf
-{
-    "name": "weave",
-    "type": "weave-net",
-    "hairpinMode": true
-}
-chmod 744 /etc/cni/net.d/10-weave.conf
-kubeadm join 192.168.56.101:6443 --token pgmop3.hyakc1edre6tl1l7 --discovery-token-ca-cert-hash sha256:9ab154a9d87b8ae05c871e19dae210f445fda1a4006b3b672424849399e32bbd
-```
+### Activities
+* Despliegue un cluster de kubernetes y verifique la estabilidad de los contenedores en los nodos (todos en running)
+* Despliegue un ejemplo que haga uso de los nodos
 
 ### References
 * http://embaby.com/blog/using-glusterfs-docker-swarm-cluster/
@@ -186,5 +159,50 @@ kubeadm join 192.168.56.101:6443 --token pgmop3.hyakc1edre6tl1l7 --discovery-tok
 
 * https://kubernetes.io/docs/concepts/configuration/assign-pod-node/  
 
-* https://docs.projectcalico.org/v3.2/getting-started/kubernetes/   <- I followed calico guide
-* https://github.com/kubernetes/kubernetes/issues/50295             <- I'm trying to solve connection issues from worker as specified here
+* https://docs.projectcalico.org/v3.2/getting-started/kubernetes/
+* https://github.com/kubernetes/kubernetes/issues/50295       
+
+
+### Pasos DEPRECATED
+
+Esto lo hice la primera vez pero ya no lo estoy usando
+```
+kubeadm init --apiserver-advertise-address $(hostname -I | awk '{print $2}') --pod-network-cidr=192.168.0.0/16
+kubectl taint nodes --all node-role.kubernetes.io/master-
+mv  $HOME/.kube $HOME/.kube.bak
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl apply -f https://docs.projectcalico.org/v3.1/getting-started/kubernetes/installation/hosted/kubeadm/1.7/calico.yaml
+kubectl get pods --all-namespaces
+```
+
+No fue necesario estaba buscando alcanzar el liveness pero el liveness es local a cada nodo
+```
+# Auto-detect the BGP IP address.
+- name: IP
+  value: "autodetect"
+- name: IP_AUTODETECTION_METHOD
+  value: "interface=enp0s8"
+```
+
+No fue necesario, calico se instala solo poniendo un contenedor y un punto de montaje en los nodos
+```
+sysctl net.bridge.bridge-nf-call-iptables=1
+export kubever=$(kubectl version | base64 | tr -d '\n')
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+```
+
+Unir los nodos
+```
+mkdir -p /etc/cni/net.d/
+vi /etc/cni/net.d/10-weave.conf
+{
+    "name": "weave",
+    "type": "weave-net",
+    "hairpinMode": true
+}
+chmod 744 /etc/cni/net.d/10-weave.conf
+kubeadm join 192.168.56.101:6443 --token pgmop3.hyakc1edre6tl1l7 --discovery-token-ca-cert-hash sha256:9ab154a9d87b8ae05c871e19dae210f445fda1a4006b3b672424849399e32bbd
+```
+
