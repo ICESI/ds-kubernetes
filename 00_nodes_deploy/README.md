@@ -65,7 +65,8 @@ https://docs.projectcalico.org/v3.2/getting-started/kubernetes/installation/rbac
 
 Instalar calico (aqui uso la rama master, para evitar inconvenientes podria fijar una version, ejemplo: 3.2)
 ```
-wget https://docs.projectcalico.org/master/getting-started/kubernetes/installation/hosted/calico.yaml
+kubectl apply -f \
+https://docs.projectcalico.org/master/getting-started/kubernetes/installation/hosted/calico.yaml
 ```
 
 Permitir el despliegue de contenedores en el nodo maestro
