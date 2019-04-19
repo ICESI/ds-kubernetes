@@ -130,6 +130,7 @@ kubectl get endpoints
 kubectl get pods --all-namespaces -o wide
 kubectl logs -n kube-system <weave-net-pod> weave
 kubectl delete -f calico.yaml
+kubeadm token create --print-join-command
 ```
 
 ### Activities
