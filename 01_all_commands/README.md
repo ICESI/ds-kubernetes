@@ -25,7 +25,6 @@
 | | |
 | kubectl create -f https://k8s.io/examples/pods/pod-nginx.yaml | |
 | | |
-|
 | kubectl get pods --field-selector status.phase=Running | |
 | kubectl get services --field-selector metadata.namespace!=default | |
 | kubectl get pods --field-selector=status.phase!=Running,spec.restartPolicy=Always | |
