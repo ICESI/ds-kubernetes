@@ -39,6 +39,19 @@ ls -l /swarm/volumes/testvol/
 
 ### Ejemplo Kubernetes y Glusterfs
 
+Los siguientes pasos fueron probados con las siguientes versiones de agentes:
+```
+vagrant@node0:~$ kubelet --version
+Kubernetes v1.12.2
+vagrant@node0:~$ kubeadm version
+kubeadm version: &version.Info{Major:"1", Minor:"12", GitVersion:"v1.12.2", GitCommit:"17c77c7898218073f14c8d573582e8d2313dc740", GitTreeState:"clean", BuildDate:"2018-10-24T06:51:33Z", GoVersion:"go1.10.4", Compiler:"gc", Platform:"linux/amd64"}
+vagrant@node0:~$ kubectl version
+Client Version: version.Info{Major:"1", Minor:"12", GitVersion:"v1.12.2", GitCommit:"17c77c7898218073f14c8d573582e8d2313dc740", GitTreeState:"clean", BuildDate:"2018-10-24T06:54:59Z", GoVersion:"go1.10.4", Compiler:"gc", Platform:"linux/amd64"}
+Server Version: version.Info{Major:"1", Minor:"12", GitVersion:"v1.12.7", GitCommit:"6f482974b76db3f1e0f5d24605a9d1d38fad9a2b", GitTreeState:"clean", BuildDate:"2019-03-25T02:41:57Z", GoVersion:"go1.10.8", Compiler:"gc", Platform:"linux/amd64"}
+vagrant@node0:~$ docker -v
+Docker version 18.09.0, build 4d60db4
+```
+
 En el nodo maestro
 ```
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors CRI --apiserver-advertise-address $(hostname -I | awk '{print $2}') --ignore-preflight-errors=SystemVerification
