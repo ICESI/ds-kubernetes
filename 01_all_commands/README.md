@@ -1,6 +1,4 @@
-# Comandos CentOS 7
-
-## Comandos comunes
+### K8S Ejemplos
 
 | Command  | Description  |
 |---|---|
