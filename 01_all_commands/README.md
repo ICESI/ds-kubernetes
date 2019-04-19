@@ -3,9 +3,9 @@
 | Command  | Description  |
 |---|---|
 | kubectl get namespaces |  |
-| kubectl --namespace=<insert-namespace-name-here> run nginx --image=nginx |  |
-| kubectl --namespace=<insert-namespace-name-here> get pods |  |
-| kubectl config set-context $(kubectl config current-context) --namespace=<insert-namespace-name-here> | |
+| kubectl --namespace=\<insert-namespace-name-her\> run nginx --image=nginx |  |
+| kubectl --namespace=\<insert-namespace-name-here\> get pods |  |
+| kubectl config set-context $(kubectl config current-context) --namespace=\<insert-namespace-name-here\> | |
 | `kubectl config view \| grep namespace:` | |
 | | |
 | kubectl api-resources --namespaced=true | |
@@ -36,9 +36,9 @@
 | kubectl apply -f configs/ | |
 | kubectl apply -R -f configs/ | |
 | | |
-| kubectl get <kind>/<name> -o yaml --export > <kind>_<name>.yaml | |
+| kubectl get \<kind\>/\<name\> -o yaml --export \> \<kind\>_\<name\>.yaml | |
 | Remove status field | |
-| kubectl replace -f <kind>_<name>.yaml | |
+| kubectl replace -f \<kind\>_\<name\>.yaml | |
 | | |
 
 ## References
