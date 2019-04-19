@@ -6,7 +6,7 @@ sudo gluster peer probe node1
 sudo gluster peer probe node2
 sudo gluster peer probe node3
 gluster pool list
-sudo gluster volume create swarm-vols replica 3 node0:/gluster/data node1:/gluster/data node2:/gluster/data node3:/gluster/data force
+sudo gluster volume create swarm-vols replica 4 node0:/gluster/data node1:/gluster/data node2:/gluster/data node3:/gluster/data force
 sudo gluster volume set swarm-vols auth.allow 127.0.0.1
 sudo gluster volume start swarm-vols
 ```
@@ -92,7 +92,7 @@ Esperar a que los pods de red esten en ejecución
 kubectl get pods --all-namespaces
 ```
 
-Unir los nodos, ( si se ha hecho un kubeadm reset ejecutar primero rm -rf ~/.kube ) 
+Unir los nodos, ( si se ha hecho un kubeadm reset ejecutar primero rm -rf ~/.kube )
 ```
 kubeadm join 192.168.56.101:6443 --token pgmop3.hyakc1edre6tl1l7 --discovery-token-ca-cert-hash sha256:9ab154a9d87b8ae05c871e19dae210f445fda1a4006b3b672424849399e32bbd --ignore-preflight-errors=SystemVerification
 mkdir -p $HOME/.kube
