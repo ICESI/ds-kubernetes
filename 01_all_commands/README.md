@@ -17,7 +17,7 @@
 | kubectl get pods -l 'environment,environment notin (frontend) | |
 | | |
 | kubectl get nodes | |
-| kubectl label nodes <node-name> <label-key>=<label-value> | |
+| <code>kubectl label nodes <node-name> <label-key>=<label-value></code> | |
 | kubectl label nodes kubernetes-foo-node-1.c.a-robinson.internal disktype=ssd | |
 | kubectl get nodes --show-labels | |
 | | |
