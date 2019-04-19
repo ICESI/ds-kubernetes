@@ -81,7 +81,7 @@ kubectl get pods --all-namespaces
 
 Unir los nodos, ( si se ha hecho un kubeadm reset ejecutar primero rm -rf ~/.kube ) 
 ```
-kubeadm join 192.168.56.101:6443 --token pgmop3.hyakc1edre6tl1l7 --discovery-token-ca-cert-hash sha256:9ab154a9d87b8ae05c871e19dae210f445fda1a4006b3b672424849399e32bbd
+kubeadm join 192.168.56.101:6443 --token pgmop3.hyakc1edre6tl1l7 --discovery-token-ca-cert-hash sha256:9ab154a9d87b8ae05c871e19dae210f445fda1a4006b3b672424849399e32bbd --ignore-preflight-errors=SystemVerification
 mkdir -p $HOME/.kube
 sudo scp root@192.168.56.101:/etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
