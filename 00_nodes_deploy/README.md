@@ -80,7 +80,7 @@ kubectl get nodes
 | lsof -i :port -S | Conocer el servicio que usa un puerto (port) |
 | journalctl -xeu kubelet | Diagnosticar fallas de kubernetes |
 | kubectl -n kube-system describe pod calico-node-mjvr8 | Ver los logs de los pods del sistema (CrashLoopBackOff) |
-| `netstat -anp | grep "LISTEN" | grep 9099` | Chequear el liveness probe check |
+| `netstat -anp \| grep "LISTEN" \| grep 9099` | Chequear el liveness probe check |
 
 ### Calico
 
