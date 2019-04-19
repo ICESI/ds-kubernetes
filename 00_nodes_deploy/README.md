@@ -41,7 +41,7 @@ ls -l /swarm/volumes/testvol/
 
 En el nodo maestro
 ```
-sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors CRI --apiserver-advertise-address $(hostname -I | awk '{print $2}') 
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors CRI --apiserver-advertise-address $(hostname -I | awk '{print $2}') --ignore-preflight-errors=SystemVerification
 ```
 
 Ejecutar como el usuario vagrant ( si se ha hecho un kubeadm reset ejecutar primero rm -rf ~/.kube )
