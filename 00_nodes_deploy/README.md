@@ -63,10 +63,10 @@ kubectl apply -f \
 https://docs.projectcalico.org/v3.2/getting-started/kubernetes/installation/rbac.yaml
 ```
 
-Instalar calico (aqui uso la rama master, para evitar inconvenientes podria fijar una version, ejemplo: 3.2)
+Instalar calico (aqui hago ping a la rama v3.5, con la version master ya no funciona)
 ```
 kubectl apply -f \
-https://docs.projectcalico.org/master/getting-started/kubernetes/installation/hosted/calico.yaml
+https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/calico.yaml
 ```
 
 Permitir el despliegue de contenedores en el nodo maestro
@@ -208,3 +208,8 @@ chmod 744 /etc/cni/net.d/10-weave.conf
 kubeadm join 192.168.56.101:6443 --token pgmop3.hyakc1edre6tl1l7 --discovery-token-ca-cert-hash sha256:9ab154a9d87b8ae05c871e19dae210f445fda1a4006b3b672424849399e32bbd
 ```
 
+Dejo de funcionar con la rama master
+```
+kubectl apply -f \
+https://docs.projectcalico.org/master/getting-started/kubernetes/installation/hosted/calico.yaml
+```
