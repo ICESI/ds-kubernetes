@@ -66,7 +66,8 @@ kubectl get nodes
 
 | Command  | Description  |
 |---|---|
-|kubectl get nodes | |
+|kubectl get nodes | Obtener los nodos del cluster |
+|kubectl describe node node1 | Obtener información del nodo 1|
 |kubectl create -f pod-nginx.yaml | |
 |kubectl delete pod nginx | |
 |kubectl label nodes node1 nodetype=development | |
@@ -77,9 +78,14 @@ kubectl get nodes
 |kubectl delete -f calico.yaml | |
 |kubeadm token create --print-join-command | Obtener el comando de union de un nodo|
 |---|---|
+| kubectl drain node2 --ignore-daemonsets --delete-local-dat | |
+| kubectl delete node node2 | |
+|---|---|
 | lsof -i :port -S | Conocer el servicio que usa un puerto (port) |
+| sudo netstat -tlpn | Conocer el servicioc que usa un puerto (port) |
 | journalctl -xeu kubelet | Diagnosticar fallas de kubernetes |
-| kubectl -n kube-system describe pod calico-node-mjvr8 | Ver los logs de los pods del sistema (CrashLoopBackOff) |
+| kubectl describe pod calico-node-mjvr8 -n kube-system | Ver los logs de los pods del sistema (CrashLoopBackOff) |
+| kubectl delete pod coredns-576cbf47c7-qcdn4 -n kube-system | Borrar un pod del sistema |
 | `netstat -anp \| grep "LISTEN" \| grep 9099` | Chequear el liveness probe check |
 
 ### Calico

@@ -1,0 +1,88 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "3"
+  creationTimestamp: 2019-04-21T02:48:41Z
+  generation: 3
+  labels:
+    k8s-app: metrics-server
+  name: metrics-server
+  namespace: kube-system
+  resourceVersion: "31466"
+  selfLink: /apis/extensions/v1beta1/namespaces/kube-system/deployments/metrics-server
+  uid: f9142db7-63df-11e9-8d24-02ee24bb8af6
+spec:
+  progressDeadlineSeconds: 2147483647
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: metrics-server
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: metrics-server
+      name: metrics-server
+    spec:
+      containers:
+      - command:
+        - /metrics-server
+        - --kubelet-insecure-tls=true
+        #- --kubelet-insecure-tls
+        - --kubelet-port=10255
+        - --v=5
+        - --logtostderr
+        - --kubelet-preferred-address-types=InternalIP
+        image: k8s.gcr.io/metrics-server-amd64:v0.3.1
+        imagePullPolicy: Always
+        name: metrics-server
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-dir
+      dnsPolicy: ClusterFirst
+      hostAliases:
+      - hostnames:
+        - node0
+        ip: 192.168.56.101
+      - hostnames:
+        - node1
+        ip: 192.168.56.102
+      - hostnames:
+        - node2
+        ip: 192.168.56.103
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: metrics-server
+      serviceAccountName: metrics-server
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: tmp-dir
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: 2019-04-21T02:48:42Z
+    lastUpdateTime: 2019-04-21T02:48:42Z
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 3
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
