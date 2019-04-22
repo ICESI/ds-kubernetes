@@ -54,16 +54,17 @@ spec:
         - mountPath: /tmp
           name: tmp-dir
       dnsPolicy: ClusterFirst
-      hostAliases:
-      - hostnames:
-        - node0
-        ip: 192.168.56.101
-      - hostnames:
-        - node1
-        ip: 192.168.56.102
-      - hostnames:
-        - node2
-        ip: 192.168.56.103
+      # hostAliases:
+      # - hostnames:
+      #   - node0
+      #   ip: 192.168.56.101
+      # - hostnames:
+      #   - node1
+      #   ip: 192.168.56.102
+      # - hostnames:
+      #   - node2
+      #   ip: 192.168.56.103
+      nodeName: node0
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
