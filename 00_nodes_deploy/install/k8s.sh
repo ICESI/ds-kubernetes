@@ -22,3 +22,5 @@ ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_SYSTEM_PODS_ARGS $K
 EOT
 systemctl daemon-reload
 systemctl restart kubelet
+
+# --authorization-mode=AlwaysAllow  # use for testing metrics-server

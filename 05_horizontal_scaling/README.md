@@ -81,3 +81,5 @@ El comando: kubectl top node , retorna: error: metrics not available yet
 * https://medium.com/@cagri.ersen/kubernetes-metrics-server-installation-d93380de008
 * https://medium.com/devopslinks/how-to-restart-kubernetes-pod-7c702ca984c1
 * https://github.com/wercker/stern
+
+* https://github.com/kubernetes-incubator/metrics-server/issues/95

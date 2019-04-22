@@ -44,6 +44,7 @@ spec:
         - --v=5
         - --logtostderr
         - --kubelet-preferred-address-types=InternalIP
+        # - --kubeconfig=/key/kubeconfig # no esta funcionando con esta linea
         image: k8s.gcr.io/metrics-server-amd64:v0.3.1
         imagePullPolicy: Always
         name: metrics-server
@@ -64,7 +65,7 @@ spec:
       # - hostnames:
       #   - node2
       #   ip: 192.168.56.103
-      nodeName: node0
+      nodeName: node0 # esta fallando en otros nodos
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
