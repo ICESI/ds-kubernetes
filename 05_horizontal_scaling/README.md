@@ -81,5 +81,10 @@ El comando: kubectl top node , retorna: error: metrics not available yet
 * https://medium.com/@cagri.ersen/kubernetes-metrics-server-installation-d93380de008
 * https://medium.com/devopslinks/how-to-restart-kubernetes-pod-7c702ca984c1
 * https://github.com/wercker/stern
+* https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+
+* https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+* https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/
+* https://github.com/kubernetes-incubator/metrics-server/issues/40
 
 * https://github.com/kubernetes-incubator/metrics-server/issues/95
