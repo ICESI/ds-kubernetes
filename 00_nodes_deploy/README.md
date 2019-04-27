@@ -82,11 +82,18 @@ kubectl get nodes
 | kubectl delete node node2 | |
 |---|---|
 | lsof -i :port -S | Conocer el servicio que usa un puerto (port) |
-| sudo netstat -tlpn | Conocer el servicioc que usa un puerto (port) |
+| sudo netstat -tlpn | Conocer el servicio que usa un puerto (port) |
 | journalctl -xeu kubelet | Diagnosticar fallas de kubernetes |
 | kubectl describe pod calico-node-mjvr8 -n kube-system | Ver los logs de los pods del sistema (CrashLoopBackOff) |
 | kubectl delete pod coredns-576cbf47c7-qcdn4 -n kube-system | Borrar un pod del sistema |
 | `netstat -anp \| grep "LISTEN" \| grep 9099` | Chequear el liveness probe check |
+|---|---|
+| kubeadm reset | |
+| rm /etc/kubernetes/kubelet.conf | |
+| rm /etc/kubernetes/bootstrap-kubelet.conf | |
+| rm /etc/kubernetes/pki/ca.crt | |
+| systemctl stop kubelet | |
+| kubeadm join ... | |
 
 ### Calico
 
