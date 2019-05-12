@@ -214,7 +214,8 @@ spec:
           ports:
             - containerPort: 80
 
-----
+---- (Este esta incluido ya en el deployment)
+
 apiVersion: v1
 kind: Pod
 metadata:
