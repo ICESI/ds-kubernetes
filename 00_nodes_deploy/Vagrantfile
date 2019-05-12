@@ -13,7 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     k8sm.vm.box = "ubuntu/xenial64"
     k8sm.vm.network :private_network, ip: "192.168.56.101"
     k8sm.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "2048","--cpus", "1", "--name", "k8s_node_0b" ]
+      vb.customize ["modifyvm", :id, "--memory", "2048","--cpus", "2", "--name", "k8s_node_0b" ]
       unless File.exist?(firstDisk)
         vb.customize ['createhd', '--filename', firstDisk, '--variant', 'Fixed', '--size', 5 * 1024]
       end

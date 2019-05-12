@@ -1,0 +1,42 @@
+### Install docker-toolbox on D:\\ directory
+
+Install docker-toolbox on D:\\Users\Daniel\docker
+
+Define the MACHINE_STORAGE_PATH environment variable at the top of start.sh file once the
+installation finish
+```
+#!/bin/bash
+
+export MACHINE_STORAGE_PATH=D:\\Users\Daniel\docker
+```
+
+Run the Docker Quickstart Terminal Shortcut, which rebuilt the default machine inside the desired folder
+
+### Install minikube on D:\\ directory
+
+minikube by default is installed on C:\\ directory. Run the following command in order to change
+the installation directory to D:\\
+```
+set MINIKUBE_HOME=D:\Users\Daniel\minikube (not working yet)
+mklink /j C:\Users\Daniel\.docker D:\Users\Daniel\docker (not working yet)
+```
+
+Start minikube (This will download and install a single node Kubernetes cluster)
+```
+minikube-windows-amd64.exe start --cache-images=false vm-driver=virtualbox
+```
+
+Download the kubectl client for Windows10
+```
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.14.0/bin/windows/amd64/kubectl.exe
+```
+
+### Install Windows10 on D:\\
+
+Create an ISO from Windows10 operating system (there is an option in Windows10 for this)
+Install the ISO on drive D:\\
+
+### Referencias
+* https://askubuntu.com/questions/551320/ubuntu-on-asus-x205ta
+https://github.com/kubernetes/minikube/issues/1574
+https://kubernetes.io/es/docs/tasks/tools/install-kubectl/

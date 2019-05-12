@@ -38,13 +38,12 @@ spec:
       containers:
       - command:
         - /metrics-server
-        - --kubelet-insecure-tls=true
-        #- --kubelet-insecure-tls
-        - --kubelet-port=10255
-        - --v=5
-        - --logtostderr
+        - --kubelet-insecure-tls
         - --kubelet-preferred-address-types=InternalIP
-        # - --kubeconfig=/key/kubeconfig # no esta funcionando con esta linea
+        #- --kubelet-insecure-tls
+        #- --kubelet-port=10255
+        #- --v=5
+        #- --logtostderr
         image: k8s.gcr.io/metrics-server-amd64:v0.3.1
         imagePullPolicy: Always
         name: metrics-server
