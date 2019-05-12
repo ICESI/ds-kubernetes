@@ -69,6 +69,7 @@ kubectl get nodes
 | Command  | Description  |
 |---|---|
 | kubeadm token create --print-join-command | Obtener el comando de union de un nodo|
+| kubectl logs metrics-server-5845cc8fd4-s7tgx -n kube-system | Chequear los logs de un pod del namespace del sistema |
 | journalctl -xeu kubelet | Diagnosticar fallas de kubernetes |
 | journalctl -xeu docker | Diagnosticar fallas de Docker |
 | lsof -i :port -S | Conocer el servicio que usa un puerto (port) |
