@@ -1,5 +1,164 @@
 ### K8S Ejemplos
 
+### Ejemplo básico kubernetes
+
+Install kubectl
+```
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+kubectl cluster-info
+```
+
+Install minikube
+```
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.22.3/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+minikube start
+```
+
+Ver los contextos (~/.kube/config)
+```
+kubectl config view
+```
+
+Usar el contexto minikube
+```
+kubectl config use-context minikube
+```
+
+Verificar que kubectl se comunica con el cluster
+```
+kubectl cluster-info
+```
+
+Cree el siguiente ejemplo server.py
+```
+import logging
+from logging.handlers import RotatingFileHandler
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    app.logger.info('info')
+    return "Hello World!"
+
+if __name__ == "__main__":
+    log_formatter = logging.Formatter( "%(asctime)s | %(pathname)s:%(lineno)d | %(funcName)s | %(levelname)s | %(message)s ")
+    file_handler = RotatingFileHandler('flask.log', maxBytes=10000, backupCount=1)
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(log_formatter)
+    app.logger.addHandler(file_handler)
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(log_formatter)
+    app.logger.addHandler(console_handler)
+    app.run(host='0.0.0.0',port=8080,debug='False')
+
+```
+
+Para construir el contenedor dentro de la VM de minikube
+```
+eval $(minikube docker-env)
+```
+
+Digite el siguiente comando para contruir un contenedor con la aplicación
+```
+docker build -t hello-flask:v1.0.0 .
+```
+
+Crear un deployment
+```
+kubectl run hello-flask --image=hello-flask:v1.0.0 --port=8080
+```
+
+Ver el deployment
+```
+kubectl get deployments
+```
+
+Ver el Pod
+```
+kubectl get pods
+```
+
+Ver los eventos del cluster
+```
+kubectl get events
+```
+
+Ver la configuración de kubectl
+```
+kubectl config view
+```
+
+Crear un servicio
+```
+kubectl expose deployment hello-flask --type=NodePort
+```
+
+Si esta desplegando en cloud (Azure, Google Cloud, AWS) use:
+```
+--type=LoadBalancer
+```
+
+Ver los servicios creados
+```
+kubectl get services
+```
+
+El parámetro indica que se quiere exponer el servicio por fuera del cluster. Es posible acceder al servicio
+a través del comando
+```
+minikube service hello-flask
+```
+
+Para observar los logs de la aplicación use el identificador del Pod
+```
+kubectl logs hello-flask-1975222887-713n9
+```
+
+Actualizar la aplicación
+
+Realizar algun cambio a la aplicación
+```
+zzzzz
+```
+
+Construir una nueva versión
+```
+docker build -t hello-flask:v2.0.0 .
+```
+
+Actualizar la imagen del deployment
+```
+kubectl set image deployment/hello-flask hello-flask=hello-flask:v2.0.0
+```
+
+Acceda el servicio actualizado a través del comando
+```
+minikube service hello-flask
+```
+
+Limpiar los recursos del cluster
+```
+kubectl delete service hello-flask
+kubectl delete deployment hello-flask
+```
+
+Para detener minikube
+```
+minikube stop
+```
+
+MacOSX
+```
+minikube start --vm-driver=xhyve
+```
+
+### Commandos generales
+
 | Command  | Description  |
 |---|---|
 | kubectl get namespaces |  |
@@ -45,3 +204,14 @@
 * https://labs.play-with-k8s.com
 * https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-achieve-this  
 * https://kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/
+
+
+* https://kubernetes.io/docs/user-guide/walkthrough/
+* https://github.com/kubernetes/minikube/releases  
+* https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/  
+* https://damyanon.net/post/flask-series-logging/  
+* https://github.com/kubernetes/community/blob/master/contributors/design-proposals/README.md
+
+* https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/
+* https://github.com/kubernetes/website/tree/master/content/en/docs/user-guide/walkthrough
+* https://medium.com/google-cloud/understanding-kubernetes-networking-pods-7117dd28727

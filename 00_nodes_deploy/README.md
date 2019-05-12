@@ -108,6 +108,7 @@ kubectl get nodes
 * Despliegue un ejemplo que haga uso de los nodos y un sistema de ficheros distribuido
 
 ### References
+* https://github.com/kubernetes/website.git
 * https://github.com/kubernetes/examples/tree/master/staging/volumes/glusterfs
 * https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 * https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/
