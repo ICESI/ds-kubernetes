@@ -68,35 +68,31 @@ kubectl get nodes
 
 | Command  | Description  |
 |---|---|
-|journalctl -xeu kubelet | Diagnosticar fallas de kubernetes |
-|journalctl -xeu docker | Diagnosticar fallas de Docker |
+| kubeadm token create --print-join-command | Obtener el comando de union de un nodo|
+| journalctl -xeu kubelet | Diagnosticar fallas de kubernetes |
+| journalctl -xeu docker | Diagnosticar fallas de Docker |
+| lsof -i :port -S | Conocer el servicio que usa un puerto (port) |
+| sudo netstat -tlpn | Conocer el servicio que usa un puerto (port) |
+| `netstat -anp \| grep "LISTEN" \| grep 9099` | Chequear el liveness probe check |
+| kubeadm reset | Reinicia el agente de administración de kubernetes, elimina los directorios creados|
+| systemctl stop kubelet | Detiene el agente de kubelet |
+|---|---|
 |kubectl get nodes | Obtener los nodos del cluster |
+|kubectl get pods --all-namespaces -o wide | Obtener los pods desplegados en todos los nodos y namespaces|
 |kubectl describe node node1 | Obtener información del nodo 1|
 |kubectl create -f pod-nginx.yaml | |
 |kubectl delete pod nginx | |
 |kubectl label nodes node1 nodetype=development | |
-|kubectl get pods -o wide | |
 |kubectl get endpoints | |
-|kubectl get pods --all-namespaces -o wide | |
 |kubectl logs -n kube-system <weave-net-pod> weave | |
 |kubectl delete -f calico.yaml | |
-|kubeadm token create --print-join-command | Obtener el comando de union de un nodo|
 |---|---|
 | kubectl drain node2 --ignore-daemonsets --delete-local-dat | |
 | kubectl delete node node2 | |
 |---|---|
-| lsof -i :port -S | Conocer el servicio que usa un puerto (port) |
-| sudo netstat -tlpn | Conocer el servicio que usa un puerto (port) |
 | kubectl describe pod calico-node-mjvr8 -n kube-system | Ver los logs de los pods del sistema (CrashLoopBackOff) |
 | kubectl delete pod coredns-576cbf47c7-qcdn4 -n kube-system | Borrar un pod del sistema |
-| `netstat -anp \| grep "LISTEN" \| grep 9099` | Chequear el liveness probe check |
 |---|---|
-| kubeadm reset | |
-| rm /etc/kubernetes/kubelet.conf | |
-| rm /etc/kubernetes/bootstrap-kubelet.conf | |
-| rm /etc/kubernetes/pki/ca.crt | |
-| systemctl stop kubelet | |
-| kubeadm join ... | |
 
 ### Calico
 
