@@ -68,6 +68,8 @@ kubectl get nodes
 
 | Command  | Description  |
 |---|---|
+|journalctl -xeu kubelet | Diagnosticar fallas de kubernetes |
+|journalctl -xeu docker | Diagnosticar fallas de Docker |
 |kubectl get nodes | Obtener los nodos del cluster |
 |kubectl describe node node1 | Obtener información del nodo 1|
 |kubectl create -f pod-nginx.yaml | |
@@ -85,7 +87,6 @@ kubectl get nodes
 |---|---|
 | lsof -i :port -S | Conocer el servicio que usa un puerto (port) |
 | sudo netstat -tlpn | Conocer el servicio que usa un puerto (port) |
-| journalctl -xeu kubelet | Diagnosticar fallas de kubernetes |
 | kubectl describe pod calico-node-mjvr8 -n kube-system | Ver los logs de los pods del sistema (CrashLoopBackOff) |
 | kubectl delete pod coredns-576cbf47c7-qcdn4 -n kube-system | Borrar un pod del sistema |
 | `netstat -anp \| grep "LISTEN" \| grep 9099` | Chequear el liveness probe check |
