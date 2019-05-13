@@ -161,6 +161,7 @@ minikube start --vm-driver=xhyve
 
 | Command  | Description  |
 |---|---|
+| kubectl proxy --port=8080 | Proporciona acceso a la API de Kubernetes, http://localhost:8080/api/v1/proxy/namespaces/<NAMESPACE>/services/<SERVICE-NAME>:<PORT-NAME>/ |
 | kubectl get namespaces |  |
 | kubectl --namespace=\<insert-namespace-name-her\> run nginx --image=nginx |  |
 | kubectl --namespace=\<insert-namespace-name-here\> get pods |  |
