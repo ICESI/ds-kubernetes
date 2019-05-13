@@ -48,7 +48,7 @@ hostAliases:
 | kubectl get hpa | |
 | kubectl create -f php-apache-deployment.yaml | |
 | kubectl get deployments | |
-| kubectl expose deployment php-apache --type=ClusterIP --port=80 | |
+| kubectl expose deployment php-apache --type=ClusterIP --port=80 | No es necesario, si ya el deployment.yaml contiene la definición del servicio |
 | kubectl get services | |
 | kubectl get svc hpa-example -o yaml \| grep clusterIP | Get the cluster IP for the service
 | curl 10.111.198.19 | Do a curl to the cluster IP address, in this case the 10.111.198.19 |
@@ -80,6 +80,18 @@ spec:
 
 php-apache-deployment.yaml
 ```
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-apache
+  labels:
+    app: php-apache
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: php-apache
+type: ClusterIP
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -220,3 +232,5 @@ En caso de necesitar reiniciar el pod de metrics-server use el siguiente procedi
 * https://github.com/kelseyhightower/kubernetes-the-hard-way/issues/356
 * https://kubernetes.io/docs/tutorials/hello-minikube/
 * https://www.mirantis.com/blog/introduction-to-yaml-creating-a-kubernetes-deployment/
+
+* https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0
