@@ -238,3 +238,4 @@ En caso de necesitar reiniciar el pod de metrics-server use el siguiente procedi
 * https://www.mirantis.com/blog/introduction-to-yaml-creating-a-kubernetes-deployment/
 
 * https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0
+* https://medium.com/@zwhitchcox/matchlabels-labels-and-selectors-explained-in-detail-for-beginners-d421bdd05362
