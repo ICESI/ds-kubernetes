@@ -201,8 +201,6 @@ En caso de necesitar reiniciar el pod de metrics-server use el siguiente procedi
 | kubectl scale --replicas=0 deployment/metrics-server -n kube-system | |
 | kubectl scale --replicas=2 deployment/coredns -n kube-system | |
 
-#### Diagnóstico
-
 ### References
 * https://medium.com/@cagri.ersen/kubernetes-metrics-server-installation-d93380de008
 * https://medium.com/devopslinks/how-to-restart-kubernetes-pod-7c702ca984c1
