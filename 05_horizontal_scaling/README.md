@@ -80,25 +80,29 @@ spec:
 
 php-apache-deployment.yaml
 ```
-apiVersion: v1
-kind: Service
-metadata:
-  name: php-apache
-  labels:
-    app: php-apache
-spec:
-  ports:
-    - port: 80
-  selector:
-    app: php-apache
-type: ClusterIP
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: php-apache
+#  labels:
+#    app: php-apache
+#spec:
+#  ports:
+#    - port: 80
+#  selector:
+#    app: php-apache
+#type: ClusterIP
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: php-apache
+#  labels:
+#    app: php-apache
 spec:
-  #replicas: 2
+#  selector:
+#    matchLabels:
+#      app: php-apache
   template:
     metadata:
       labels:
