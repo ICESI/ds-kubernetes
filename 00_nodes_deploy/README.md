@@ -64,6 +64,32 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl get nodes
 ```
 
+Para desplegar un pod hello-node
+```
+kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+```
+
+server.js
+```
+var http = require('http');
+
+var handleRequest = function(request, response) {
+  console.log('Received request for URL: ' + request.url);
+  response.writeHead(200);
+  response.end('Hello World!');
+};
+var www = http.createServer(handleRequest);
+www.listen(8080);
+```
+
+Dockerfile
+```
+FROM node:6.14.2
+EXPOSE 8080
+COPY server.js .
+CMD node server.js
+```
+
 ### Comandos útiles
 
 | Command  | Description  |

@@ -199,12 +199,17 @@ minikube start --vm-driver=xhyve
 | Remove status field | |
 | kubectl replace -f \<kind\>_\<name\>.yaml | |
 | | |
+| kubectl get deployments --all-namespaces | Remove a pod permanently |
+| kubectl delete -n NAMESPACE deployment DEPLOYMENT | |
+| kubectl delete pods podname --grace-period=0 --force | |
+| | |
+| kubectl describe nodes \| grep -i taint | Find node taints |
+| kubectl describe nodes your-node-name \| grep -i taint | |
 
 ## References
 * https://labs.play-with-k8s.com
 * https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-achieve-this  
 * https://kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/
-
 
 * https://kubernetes.io/docs/user-guide/walkthrough/
 * https://github.com/kubernetes/minikube/releases  
@@ -215,3 +220,9 @@ minikube start --vm-driver=xhyve
 * https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/
 * https://github.com/kubernetes/website/tree/master/content/en/docs/user-guide/walkthrough
 * https://medium.com/google-cloud/understanding-kubernetes-networking-pods-7117dd28727
+
+* https://www.digitalocean.com/community/tutorials/an-introduction-to-kubernetes
+* https://www.cncf.io/the-childrens-illustrated-guide-to-kubernetes/
+* https://learning.oreilly.com/videos/kubernetes-course-from/9781789806823/9781789806823-video4_2
+
+* https://stackoverflow.com/questions/40686151/kubernetes-pod-gets-recreated-when-deleted
