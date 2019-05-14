@@ -163,6 +163,14 @@ Crear un servicio
 kubectl expose deployment hello-flask --type=NodePort
 ```
 
+ó
+
+```
+kubectl expose deployment hello-flask --type=ClusterIP --port=8080
+```
+
+ó
+
 Si esta desplegando en cloud (Azure, Google Cloud, AWS) use:
 ```
 --type=LoadBalancer
@@ -172,6 +180,8 @@ Ver los servicios creados
 ```
 kubectl get services
 ```
+
+Nota: Tambien puede definir una especificación para el servicio en el hello_flask_deployment.yaml
 
 El parámetro indica que se quiere exponer el servicio por fuera del cluster. Es posible acceder al servicio
 a través del comando
@@ -188,7 +198,28 @@ Actualizar la aplicación
 
 Realizar algun cambio a la aplicación
 ```
-zzzzz
+import logging
+from logging.handlers import RotatingFileHandler
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    app.logger.info('info')
+    return "Hello Kubernetes"
+
+if __name__ == "__main__":
+    log_formatter = logging.Formatter( "%(asctime)s | %(pathname)s:%(lineno)d | %(funcName)s | %(levelname)s | %(message)s ")
+    file_handler = RotatingFileHandler('flask.log', maxBytes=10000, backupCount=1)
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(log_formatter)
+    app.logger.addHandler(file_handler)
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(log_formatter)
+    app.logger.addHandler(console_handler)
+    app.run(host='0.0.0.0',port=8080,debug='False')
 ```
 
 Construir una nueva versión
