@@ -177,6 +177,7 @@ kubectl expose deployment hello-flask --type=NodePort
 
 ó
 
+Si esta desplegando en un cluster local (En cluster local tambien puede usar NodePort)
 ```
 kubectl expose deployment hello-flask --type=ClusterIP --port=8080
 ```
@@ -249,7 +250,8 @@ Acceda el servicio actualizado a través del comando
 minikube service hello-flask
 ```
 
-Limpiar los recursos del cluster
+Limpiar los recursos del cluster (Antes de hacer esto realice las actividades
+al final de la guía)
 ```
 kubectl delete service hello-flask
 kubectl delete deployment hello-flask
@@ -265,7 +267,7 @@ MacOSX
 minikube start --vm-driver=xhyve
 ```
 
-### Pruebas en un cluster real
+### Pruebas en un cluster local
 
 ```
 NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
@@ -331,6 +333,19 @@ Recuerde que en el caso de ClusterIP el puerto expuesto en el servicio debe coin
 | | |
 | kubectl describe nodes \| grep -i taint | Find node taints |
 | kubectl describe nodes your-node-name \| grep -i taint | |
+
+### Actividades
+* Cree la especificación para el servicio en el archivo hello_flask_deployment.yaml y despliegue nuevamente con el comando:
+
+```
+kubectl apply -f hello_flask_deployment.yaml
+```
+
+ó 
+
+```
+kubectl edit deployment hello-flask
+```
 
 ### References
 * https://labs.play-with-k8s.com
