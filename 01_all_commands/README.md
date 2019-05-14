@@ -55,8 +55,13 @@ if __name__ == "__main__":
     console_handler.setFormatter(log_formatter)
     app.logger.addHandler(console_handler)
     app.run(host='0.0.0.0',port=8080,debug='False')
+```
+
+Dockerfile
+```
 
 ```
+
 
 Para construir el contenedor dentro de la VM de minikube
 ```
@@ -71,6 +76,66 @@ docker build -t hello-flask:v1.0.0 .
 Crear un deployment
 ```
 kubectl run hello-flask --image=hello-flask:v1.0.0 --port=8080
+```
+ó
+
+```
+kubectl create -f hello_flask_deployment.yaml
+```
+
+hello_flask_deployment.yaml
+```
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-flask
+#  labels:
+#    app: hello-flask
+spec:
+#  selector:
+#    matchLabels:
+#      app: hello-flask
+  template:
+    metadata:
+      labels:
+        app: hello-flask
+    spec:
+      containers:
+        - name: flask-container
+          image: hello-flask:v1.0.0
+          resources:
+            requests:
+              #memory: "64Mi"
+              cpu: "100m"
+            limits:
+              #memory: "64Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 8080
+```
+
+hello_flask_pod.yaml (ya incluido en el deployment.yaml)
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-flask
+  labels:
+    app: flask-app
+spec:
+  containers:
+    - name: flask-container
+      image: hello-flask:v1.0.0
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "100m"
+        limits:
+          memory: "64Mi"
+          cpu: "200m"
+      ports:
+        - containerPort: 8080
 ```
 
 Ver el deployment
