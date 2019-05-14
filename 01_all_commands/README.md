@@ -253,6 +253,23 @@ MacOSX
 minikube start --vm-driver=xhyve
 ```
 
+### Pruebas en un cluster real
+
+```
+NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+hello-flask   NodePort    10.96.118.135   <none>        8080:31042/TCP   6s
+hello-node    ClusterIP   10.100.208.42   <none>        8080/TCP         11m
+```
+
+Si esta desplegando en un cluster real, prueba la aplicación asi dependiendo del tipo de servicio:
+
+```
+curl 192.168.56.101:31042
+curl 10.100.208.42:8080
+```
+
+Recuerde que en el caso de ClusterIP el puerto expuesto en el servicio debe coincidir con el expuesto por la aplicación
+
 ### Commandos generales
 
 | Command  | Description  |
@@ -303,7 +320,7 @@ minikube start --vm-driver=xhyve
 | kubectl describe nodes \| grep -i taint | Find node taints |
 | kubectl describe nodes your-node-name \| grep -i taint | |
 
-## References
+### References
 * https://labs.play-with-k8s.com
 * https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-achieve-this  
 * https://kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/
