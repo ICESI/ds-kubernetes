@@ -59,7 +59,15 @@ if __name__ == "__main__":
 
 Dockerfile
 ```
-
+FROM ubuntu:latest
+MAINTAINER Rajdeep Dua "dua_rajdeep@yahoo.com"
+RUN apt-get update -y
+RUN apt-get install -y python-pip python-dev build-essential
+COPY server.py /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+ENTRYPOINT ["python"]
+CMD ["server.py"]
 ```
 
 
@@ -77,6 +85,9 @@ Crear un deployment
 ```
 kubectl run hello-flask --image=hello-flask:v1.0.0 --port=8080
 ```
+
+Nota: El uso de run esta DEPRECATED
+
 ó
 
 ```
@@ -90,12 +101,13 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: hello-flask
-#  labels:
-#    app: hello-flask
+  labels:
+    app: hello-flask
 spec:
-#  selector:
-#    matchLabels:
-#      app: hello-flask
+  selector:
+    matchLabels:
+      app: hello-flask
+  replicas: 3
   template:
     metadata:
       labels:
@@ -106,10 +118,10 @@ spec:
           image: hello-flask:v1.0.0
           resources:
             requests:
-              #memory: "64Mi"
+              memory: "64Mi"
               cpu: "100m"
             limits:
-              #memory: "64Mi"
+              memory: "64Mi"
               cpu: "200m"
           ports:
             - containerPort: 8080
