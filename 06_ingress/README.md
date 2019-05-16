@@ -7,6 +7,8 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 kubectl apply -f https://raw.githubusercontent.com/containous/traefik/v1.7/examples/k8s/traefik-rbac.yaml
 kubectl apply -f https://raw.githubusercontent.com/containous/traefik/v1.7/examples/k8s/traefik-ds.yaml
 kubectl apply -f ingress.yaml
+kubectl apply -f apple.yaml
+kubectl apply -f banana.yaml
 kubectl get pods -n kube-system
 kubectl describe ingress example-ingress
 ```
