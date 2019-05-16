@@ -31,44 +31,8 @@ Verificar que kubectl se comunica con el cluster
 kubectl cluster-info
 ```
 
-Cree el siguiente ejemplo server.py
-```
-import logging
-from logging.handlers import RotatingFileHandler
-
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route("/")
-def hello():
-    app.logger.info('info')
-    return "Hello World!"
-
-if __name__ == "__main__":
-    log_formatter = logging.Formatter( "%(asctime)s | %(pathname)s:%(lineno)d | %(funcName)s | %(levelname)s | %(message)s ")
-    file_handler = RotatingFileHandler('flask.log', maxBytes=10000, backupCount=1)
-    file_handler.setLevel(logging.INFO)
-    file_handler.setFormatter(log_formatter)
-    app.logger.addHandler(file_handler)
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(log_formatter)
-    app.logger.addHandler(console_handler)
-    app.run(host='0.0.0.0',port=8080,debug='False')
-```
-
-Dockerfile
-```
-FROM ubuntu:latest
-MAINTAINER Rajdeep Dua "dua_rajdeep@yahoo.com"
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
-COPY server.py /app
-WORKDIR /app
-RUN pip install -r requirements.txt
-ENTRYPOINT ["python"]
-CMD ["server.py"]
-```
+Use el ejemplo del repositorio:
+https://github.com/ICESI/ds-docker/tree/master/02_docker_python/01_alpine
 
 
 Para construir el contenedor dentro de la VM de minikube
@@ -345,6 +309,47 @@ kubectl apply -f hello_flask_deployment.yaml
 
 ```
 kubectl edit deployment hello-flask
+```
+
+* Despliegue la siguiente aplicación
+
+server.py
+```
+import logging
+from logging.handlers import RotatingFileHandler
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    app.logger.info('info')
+    return "Hello World!"
+
+if __name__ == "__main__":
+    log_formatter = logging.Formatter( "%(asctime)s | %(pathname)s:%(lineno)d | %(funcName)s | %(levelname)s | %(message)s ")
+    file_handler = RotatingFileHandler('flask.log', maxBytes=10000, backupCount=1)
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(log_formatter)
+    app.logger.addHandler(file_handler)
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(log_formatter)
+    app.logger.addHandler(console_handler)
+    app.run(host='0.0.0.0',port=8080,debug='False')
+```
+
+Dockerfile
+```
+FROM ubuntu:latest
+MAINTAINER Rajdeep Dua "dua_rajdeep@yahoo.com"
+RUN apt-get update -y
+RUN apt-get install -y python-pip python-dev build-essential
+COPY server.py /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+ENTRYPOINT ["python"]
+CMD ["server.py"]
 ```
 
 ### References
