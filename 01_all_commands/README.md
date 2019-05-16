@@ -174,30 +174,7 @@ kubectl logs hello-flask-1975222887-713n9
 Actualizar la aplicación
 
 Realizar algun cambio a la aplicación
-```
-import logging
-from logging.handlers import RotatingFileHandler
-
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route("/")
-def hello():
-    app.logger.info('info')
-    return "Hello Kubernetes"
-
-if __name__ == "__main__":
-    log_formatter = logging.Formatter( "%(asctime)s | %(pathname)s:%(lineno)d | %(funcName)s | %(levelname)s | %(message)s ")
-    file_handler = RotatingFileHandler('flask.log', maxBytes=10000, backupCount=1)
-    file_handler.setLevel(logging.INFO)
-    file_handler.setFormatter(log_formatter)
-    app.logger.addHandler(file_handler)
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(log_formatter)
-    app.logger.addHandler(console_handler)
-    app.run(host='0.0.0.0',port=8080,debug='False')
-```
+https://github.com/ICESI/ds-docker/tree/master/02_docker_python/01_alpine
 
 Construir una nueva versión
 ```
