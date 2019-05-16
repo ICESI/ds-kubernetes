@@ -16,12 +16,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: example-ingress
-  #annotations:
-    #traefik.ingress.kubernetes.io/affinity: "true"
-    #kubernetes.io/ingress.class: "nginx"
-    #kubernetes.io/ingress.global-static-ip-name: 192.168.56.2
-    #ingress.kubernetes.io/rewrite-target: /
-    #ingress.appscode.com/type: NodePort
 spec:
   rules:
   - host: fruits.192.168.56.101.nip.io
@@ -111,10 +105,15 @@ $ curl -kL http://fruits.192.168.56.101.nip.io//notfound
 default backend - 404
 ```
 
-Probando desde el anfitrión
+Probando de otra manera
+
+Cambie en el archivo ingress.yaml el host
+``` 
+- host: fruits.192.168.56.101.nip.io
+- host : www.fruits.com
 ```
 /etc/hosts
-fruits.192.168.56.101.nip.io www.fruits.com
+192.168.56.101 www.fruits.com
 ```
 
 ```
