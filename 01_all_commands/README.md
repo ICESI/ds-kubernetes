@@ -77,6 +77,7 @@ spec:
       labels:
         app: hello-flask
     spec:
+      nodeName: node0
       containers:
         - name: flask-container
           image: hello-flask:v1.0.0
@@ -100,6 +101,7 @@ metadata:
   labels:
     app: flask-app
 spec:
+  nodeName: node0
   containers:
     - name: flask-container
       image: hello-flask:v1.0.0
@@ -276,6 +278,9 @@ Recuerde que en el caso de ClusterIP el puerto expuesto en el servicio debe coin
 | kubectl describe nodes your-node-name \| grep -i taint | |
 
 ### Actividades
+* Despliegue un registry local en el cluster de kubernetes y remueva la restricción que
+solo permite ejecutar el pod en el nodo0
+
 * Cree la especificación para el servicio en el archivo hello_flask_deployment.yaml y despliegue nuevamente con el comando:
 
 ```
