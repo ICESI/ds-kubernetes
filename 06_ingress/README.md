@@ -83,7 +83,7 @@ spec:
     - port: 5678 # Default port for image
 ```
 
-Pruebas del Ingress
+Pruebas del Ingress (Nodo Maestro)
 ```
 vagrant@node0:/vagrant/ingress$ kubectl get svc
 NAME             TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
@@ -92,20 +92,25 @@ banana-service   ClusterIP      10.108.105.61   <none>        5678/TCP         4
 kubernetes       ClusterIP      10.96.0.1       <none>        443/TCP          9d
 ```
 
+Pruebe los llamados al servicio directamente
 ```
 $ curl 10.97.202.187:5678/apple
+apple
+$ curl 10.108.105.61:5678/banana
+banana
+```
+
+Pruebe los llamados a través de Ingress
+```
 $ curl -kL http://fruits.192.168.56.101.nip.io/apple
 apple
-
-$ curl 10.108.105.61:5678/banana
 $ curl -kL http://fruits.192.168.56.101.nip.io/banana
 banana
-
 $ curl -kL http://fruits.192.168.56.101.nip.io//notfound
 default backend - 404
 ```
 
-Probando de otra manera
+Probando de otra manera (Nodo Maestro)
 
 Cambie en el archivo ingress.yaml el host
 ``` 
