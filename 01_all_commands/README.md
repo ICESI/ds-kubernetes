@@ -121,7 +121,7 @@ kubectl get deployments
 
 Ver el Pod
 ```
-kubectl get pods
+kubectl get pods --selector=app=hello-flask
 ```
 
 Ver los eventos del cluster
