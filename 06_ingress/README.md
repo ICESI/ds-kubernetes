@@ -112,10 +112,13 @@ Cambie en el archivo ingress.yaml el host
 - host: fruits.192.168.56.101.nip.io
 - host : www.fruits.com
 ```
-/etc/hosts
+
+Adicione la siguiente entrada al archivo /etc/hosts
+```
 192.168.56.101 www.fruits.com
 ```
 
+Realice las siguientes pruebas
 ```
 curl www.fruits.com/apple
 curl www.fruits.com/banana
