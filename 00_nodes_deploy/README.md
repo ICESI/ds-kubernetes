@@ -147,4 +147,5 @@ CMD node server.js
 * https://github.com/kubernetes/kubernetes/issues/33671
 * https://kubernetes.io/docs/concepts/configuration/assign-pod-node/  
 * https://docs.projectcalico.org/v3.2/getting-started/kubernetes/
-* https://github.com/kubernetes/kubernetes/issues/50295       
+* https://github.com/kubernetes/kubernetes/issues/50295   
+* https://github.com/GoogleCloudPlatform/microservices-demo
