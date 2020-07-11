@@ -134,6 +134,22 @@ CMD node server.js
 * Despliegue un cluster de kubernetes y verifique la estabilidad de los contenedores en los nodos (todos en running)
 * Despliegue un ejemplo que haga uso de los nodos y un sistema de ficheros distribuido
 
+### Troubleshooting
+
+Error:  
+[ERROR Swap]: running with swap on is not supported. Please disable swap
+
+Solution:
+```
+kubeadm reset 
+echo 'Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"' >> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+systemctl daemon-reload
+systemctl restart kubelet
+
+kubeadm init
+```
+
 ### References
 * https://github.com/kubernetes/website.git
 * https://github.com/kubernetes/examples/tree/master/staging/volumes/glusterfs
